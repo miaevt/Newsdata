@@ -4,17 +4,21 @@ import psycopg2
 
 if __name__ == '__main__':
     DBNAME = "news"
-    q1 = "select articles.title, logpath.views from logpath join articles on logpath.path like concat('%', articles.slug, '%') order by logpath.views desc limit 3;"
+    q1 = """select articles.title, logpath.views from logpath
+    join articles on logpath.path like concat('%', articles.slug, '%')
+    order by logpath.views desc limit 3;"""
     q2 = """select authors.name, sum(logpath.views) as views from logpath
     join articles on logpath.path like concat('%', articles.slug, '%')
     join authors on articles.author = authors.id
     group by authors.name order by views desc;"""
-    q3 = """select errtotal.time::date, cast(errtotal.error as float) / cast(total.requests as float) * 100 as errors
-    from errtotal left join total on errtotal.time::date = total.time::date
-    where (cast(errtotal.error as float) / cast(total.requests as float) * 100) > 1;"""
+    q3 = """select error.time::date,
+    cast(error.total as float) / cast(total.requests as float) * 100 as err
+    from error left join total on error.time::date = total.time::date
+    where cast(error.total as float) / cast(total.requests as float) * 100 > 1;
+    """
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
-    
+
     # Executes each query
     c.execute(q1)
     articles = c.fetchall()
