@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import psycopg2
 
 if __name__ == '__main__':
@@ -8,6 +10,7 @@ if __name__ == '__main__':
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     
+    # Executes each query
     c.execute(q1)
     articles = c.fetchall()
     c.execute(q2)
@@ -15,6 +18,8 @@ if __name__ == '__main__':
     c.execute(q3)
     errors = c.fetchall()
     db.close()
+
+    # Prints out formatted results
 
     print("Three most popular articles of all time:\n")
     for x in articles:
