@@ -49,7 +49,4 @@ GROUP BY time::date;
 ## Get Started
 Before running the Python code, execute the view statements listed in the "View Statements" section above.
 
-Use this command to run the code:
-```
-python newsdb.py
-```
+Use this command to run the code: ```python newsdb.py```
